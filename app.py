@@ -199,12 +199,12 @@ def network_acls():
         action = request.form.get('action', 'add')
         nacl_id = request.form['nacl_id']
         rule_number = int(request.form['rule_number'])
-        protocol = request.form['protocol']
-        rule_action = request.form['rule_action']
         egress = request.form.get('egress', 'false') == 'true'
-        cidr_block = request.form['cidr_block']
         try:
             if action == 'add':
+                protocol = request.form['protocol']
+                rule_action = request.form['rule_action']
+                cidr_block = request.form['cidr_block']
                 ec2.create_network_acl_entry(
                     NetworkAclId=nacl_id,
                     RuleNumber=rule_number,
