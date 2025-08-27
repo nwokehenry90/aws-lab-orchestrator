@@ -63,8 +63,8 @@ A Flask web application to automate the creation and management of AWS lab envir
 - Remember to clean up resources in your AWS account to avoid unnecessary charges.
 
 ## Acknowledgements
-- Original project idea by [Your Friend's Name].
-- Flask app and automation logic by [Your Name].
+- Original project idea by Fadil Oderinu. (https://www.linkedin.com/in/foderinu/)
+- Flask app and automation logic by Henry Nwoke. (https://www.linkedin.com/in/nwokehenry90/)
 
 ## License
 MIT License
