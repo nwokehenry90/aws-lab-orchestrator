@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Network ACLs</title>
+</head>
+<body>
+    <h1>Network ACLs</h1>
+    <ul>
+        {% for nacl in nacls %}
+            <li>
+                <strong>{{ nacl.NetworkAclId }}</strong>
+                <ul>
+                    {% for entry in nacl.Entries %}
+                        <li>
+                            Rule #: {{ entry.RuleNumber }},
+                            Protocol: {{ entry.Protocol }},
+                            Action: {{ entry.RuleAction }},
+                            Egress: {{ entry.Egress }},
+                            CIDR: {{ entry.CidrBlock }}
+                            <form method="post" style="display:inline;">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="nacl_id" value="{{ nacl.NetworkAclId }}">
+                                <input type="hidden" name="rule_number" value="{{ entry.RuleNumber }}">
+                                <input type="hidden" name="egress" value="{{ entry.Egress|lower }}">
+                                <button type="submit">Delete</button>
+                            </form>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Add NACL Rule</h2>
+    <form method="post">
+        <input type="hidden" name="action" value="add">
+        <label>NACL ID:</label>
+        <select name="nacl_id">
+            {% for nacl in nacls %}
+                <option value="{{ nacl.NetworkAclId }}">{{ nacl.NetworkAclId }}</option>
+            {% endfor %}
+        </select><br>
+        <label>Rule Number:</label>
+        <input type="number" name="rule_number" required><br>
+        <label>Protocol (e.g. -1 for all):</label>
+        <input type="text" name="protocol" value="-1"><br>
+        <label>Action (allow/deny):</label>
+        <input type="text" name="rule_action" value="allow"><br>
+        <label>Egress (true/false):</label>
+        <select name="egress">
+            <option value="false">Ingress</option>
+            <option value="true">Egress</option>
+        </select><br>
+        <label>CIDR Block:</label>
+        <input type="text" name="cidr_block" value="0.0.0.0/0"><br>
+        <button type="submit">Add Rule</button>
+    </form>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <a href="{{ url_for('index') }}">Back to Home</a>
+</body>
+</html>

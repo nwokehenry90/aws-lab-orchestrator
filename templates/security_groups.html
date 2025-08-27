@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Modify Security Groups</title>
+</head>
+<body>
+    <h1>Security Groups</h1>
+    <ul>
+        {% for sg in sgs %}
+            <li>
+                <strong>{{ sg.GroupId }} - {{ sg.GroupName }}</strong>
+                <ul>
+                    {% for rule in sg.IpPermissions %}
+                        {% for ip in rule.IpRanges %}
+                        <li>
+                            Protocol: {{ rule.IpProtocol }},
+                            Ports: {{ rule.FromPort }}-{{ rule.ToPort }},
+                            CIDR: {{ ip.CidrIp }}
+                            <form method="post" style="display:inline;">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="group_id" value="{{ sg.GroupId }}">
+                                <input type="hidden" name="ip_protocol" value="{{ rule.IpProtocol }}">
+                                <input type="hidden" name="from_port" value="{{ rule.FromPort }}">
+                                <input type="hidden" name="to_port" value="{{ rule.ToPort }}">
+                                <input type="hidden" name="cidr_ip" value="{{ ip.CidrIp }}">
+                                <button type="submit">Delete</button>
+                            </form>
+                        </li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Add Ingress Rule</h2>
+    <form method="post">
+        <input type="hidden" name="action" value="add">
+        <label>Group ID:</label>
+        <select name="group_id">
+            {% for sg in sgs %}
+                <option value="{{ sg.GroupId }}">{{ sg.GroupId }} - {{ sg.GroupName }}</option>
+            {% endfor %}
+        </select><br>
+        <label>Protocol:</label>
+        <input type="text" name="ip_protocol" value="tcp"><br>
+        <label>From Port:</label>
+        <input type="number" name="from_port"><br>
+        <label>To Port:</label>
+        <input type="number" name="to_port"><br>
+        <label>CIDR IP:</label>
+        <input type="text" name="cidr_ip" value="0.0.0.0/0"><br>
+        <button type="submit">Add Rule</button>
+    </form>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <a href="{{ url_for('index') }}">Back to Home</a>
+</body>
+</html>

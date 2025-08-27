@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resources Created</title>
+</head>
+<body>
+    <h1>Resources Created Successfully!</h1>
+    <p>Your AWS lab environment has been set up.</p>
+
+    <h2>Resources Created:</h2>
+    <ul>
+        <li>VPC</li>
+        <li>Subnet</li>
+        <li>Internet Gateway</li>
+        <li>Route Table</li>
+        <li>Security Group A (SGA)</li>
+        <li>Security Group B (SGB)</li>
+        <li>Network ACL</li>
+        <li>EC2 Instance A</li>
+        <li>EC2 Instance B</li>
+    </ul>
+
+    {% if public_ips %}
+        <h2>EC2 Instances Public IPs:</h2>
+        <ul>
+            {% for ip in public_ips %}
+                <li>{{ ip }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <a href="{{ url_for('index') }}">Back to

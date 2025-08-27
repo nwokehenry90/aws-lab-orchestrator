@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AWS Lab Setup</title>
+</head>
+<body>
+    <h1>AWS Lab Setup</h1>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <form method="post">
+        <label>Home IP (CIDR): <input type="text" name="home_ip" required placeholder="203.0.113.45/32"></label><br>
+        <label for="keypair">Key Pair:</label>
+<select name="keypair" id="keypair" required>
+    {% for kp in keypairs %}
+        <option value="{{ kp }}">{{ kp }}</option>
+    {% endfor %}
+</select><br>
+        <label>AMI ID: <input type="text" name="ami_id" required value="ami-08a6efd148b1f7504"></label><br>
+        <label>Instance Type:
+            <select name="instance_type">
+                <option value="t2.micro">t2.micro</option>
+                <option value="t3.micro">t3.micro</option>
+            </select>
+        </label><br>
+        <input type="submit" value="Launch Lab">
+    </form>
+</body>
+</html>

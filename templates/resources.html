@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AWS Resources</title>
+</head>
+<body>
+    <h1>AWS Resources</h1>
+    <h2>VPCs</h2>
+    <ul>
+        {% for vpc in vpcs %}
+            <li>{{ vpc.VpcId }} - CIDR: {{ vpc.CidrBlock }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Subnets</h2>
+    <ul>
+        {% for subnet in subnets %}
+            <li>{{ subnet.SubnetId }} - CIDR: {{ subnet.CidrBlock }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Security Groups</h2>
+    <ul>
+        {% for sg in sgs %}
+            <li>{{ sg.GroupId }} - {{ sg.GroupName }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>EC2 Instances</h2>
+    <ul>
+        {% for reservation in instances %}
+            {% for instance in reservation.Instances %}
+                <li>{{ instance.InstanceId }} - State: {{ instance.State.Name }} - Public IP: {{ instance.PublicIpAddress }}</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('index') }}">Back to Home</a>
+</body>
+</html>
