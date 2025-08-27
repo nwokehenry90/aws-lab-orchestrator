@@ -81,12 +81,13 @@
                 {% for message in messages %}
                     <div>{{ message }}</div>
                 {% endfor %}
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
-    <a href="{{ url_for('index') }}">Back to Home</a>
-</body>
-</html>
+                </div>
+            {% endif %}
+        {% endwith %}
+        <div class="d-grid mt-3">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-primary">Back to Home</a>
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
