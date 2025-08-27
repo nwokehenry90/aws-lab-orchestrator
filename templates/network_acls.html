@@ -10,24 +10,26 @@
                     <div class="mb-4">
                         <h5>{{ nacl.NetworkAclId }}</h5>
                         <ul class="list-group">
-                            {% for entry in nacl.Entries %}
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <span>
-                                        <strong>Rule #:</strong> {{ entry.RuleNumber }},
-                                        <strong>Protocol:</strong> {{ entry.Protocol }},
-                                        <strong>Action:</strong> {{ entry.RuleAction }},
-                                        <strong>Egress:</strong> {{ entry.Egress }},
-                                        <strong>CIDR:</strong> {{ entry.CidrBlock }}
-                                    </span>
-                                    <form method="post" class="ms-2">
-                                        <input type="hidden" name="action" value="delete">
-                                        <input type="hidden" name="nacl_id" value="{{ nacl.NetworkAclId }}">
-                                        <input type="hidden" name="rule_number" value="{{ entry.RuleNumber }}">
-                                        <input type="hidden" name="egress" value="{{ entry.Egress|lower }}">
-                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                    </form>
-                                </li>
-                            {% endfor %}
+                                            {% for entry in nacl.Entries %}
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <span>
+                                                        <strong>Rule #:</strong> {{ entry.RuleNumber }},
+                                                        <strong>Protocol:</strong> {{ entry.Protocol }},
+                                                        <strong>Action:</strong> {{ entry.RuleAction }},
+                                                        <strong>Egress:</strong> {{ entry.Egress }},
+                                                        <strong>CIDR:</strong> {{ entry.CidrBlock }}
+                                                    </span>
+                                                    {% if entry.RuleNumber != 32767 %}
+                                                    <form method="post" class="ms-2">
+                                                        <input type="hidden" name="action" value="delete">
+                                                        <input type="hidden" name="nacl_id" value="{{ nacl.NetworkAclId }}">
+                                                        <input type="hidden" name="rule_number" value="{{ entry.RuleNumber }}">
+                                                        <input type="hidden" name="egress" value="{{ entry.Egress|lower }}">
+                                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                    </form>
+                                                    {% endif %}
+                                                </li>
+                                            {% endfor %}
                         </ul>
                     </div>
                 {% endfor %}
