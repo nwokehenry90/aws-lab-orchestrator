@@ -1,39 +1,42 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>AWS Resources</title>
-</head>
-<body>
-    <h1>AWS Resources</h1>
-    <h2>VPCs</h2>
-    <ul>
-        {% for vpc in vpcs %}
-            <li>{{ vpc.VpcId }} - CIDR: {{ vpc.CidrBlock }}</li>
-        {% endfor %}
-    </ul>
-
-    <h2>Subnets</h2>
-    <ul>
-        {% for subnet in subnets %}
-            <li>{{ subnet.SubnetId }} - CIDR: {{ subnet.CidrBlock }}</li>
-        {% endfor %}
-    </ul>
-
-    <h2>Security Groups</h2>
-    <ul>
-        {% for sg in sgs %}
-            <li>{{ sg.GroupId }} - {{ sg.GroupName }}</li>
-        {% endfor %}
-    </ul>
-
-    <h2>EC2 Instances</h2>
-    <ul>
-        {% for reservation in instances %}
-            {% for instance in reservation.Instances %}
-                <li>{{ instance.InstanceId }} - State: {{ instance.State.Name }} - Public IP: {{ instance.PublicIpAddress }}</li>
-            {% endfor %}
-        {% endfor %}
-    </ul>
-    <a href="{{ url_for('index') }}">Back to Home</a>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}AWS Resources{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+        <div class="card shadow-sm mt-4 mb-4">
+            <div class="card-body">
+                <h2 class="card-title mb-4 text-center">AWS Resources</h2>
+                <h4>VPCs</h4>
+                <ul class="list-group mb-3">
+                    {% for vpc in vpcs %}
+                        <li class="list-group-item">{{ vpc.VpcId }} - CIDR: {{ vpc.CidrBlock }}</li>
+                    {% endfor %}
+                </ul>
+                <h4>Subnets</h4>
+                <ul class="list-group mb-3">
+                    {% for subnet in subnets %}
+                        <li class="list-group-item">{{ subnet.SubnetId }} - CIDR: {{ subnet.CidrBlock }}</li>
+                    {% endfor %}
+                </ul>
+                <h4>Security Groups</h4>
+                <ul class="list-group mb-3">
+                    {% for sg in sgs %}
+                        <li class="list-group-item">{{ sg.GroupId }} - {{ sg.GroupName }}</li>
+                    {% endfor %}
+                </ul>
+                <h4>EC2 Instances</h4>
+                <ul class="list-group mb-3">
+                    {% for reservation in instances %}
+                        {% for instance in reservation.Instances %}
+                            <li class="list-group-item">{{ instance.InstanceId }} - State: {{ instance.State.Name }} - Public IP: {{ instance.PublicIpAddress }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+                <div class="d-grid">
+                    <a href="{{ url_for('index') }}" class="btn btn-outline-primary">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

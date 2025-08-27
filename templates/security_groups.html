@@ -1,63 +1,81 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Modify Security Groups</title>
-</head>
-<body>
-    <h1>Security Groups</h1>
-    <ul>
-        {% for sg in sgs %}
-            <li>
-                <strong>{{ sg.GroupId }} - {{ sg.GroupName }}</strong>
-                <ul>
-                    {% for rule in sg.IpPermissions %}
-                        {% for ip in rule.IpRanges %}
-                        <li>
-                            Protocol: {{ rule.IpProtocol }},
-                            Ports: {{ rule.FromPort }}-{{ rule.ToPort }},
-                            CIDR: {{ ip.CidrIp }}
-                            <form method="post" style="display:inline;">
-                                <input type="hidden" name="action" value="delete">
-                                <input type="hidden" name="group_id" value="{{ sg.GroupId }}">
-                                <input type="hidden" name="ip_protocol" value="{{ rule.IpProtocol }}">
-                                <input type="hidden" name="from_port" value="{{ rule.FromPort }}">
-                                <input type="hidden" name="to_port" value="{{ rule.ToPort }}">
-                                <input type="hidden" name="cidr_ip" value="{{ ip.CidrIp }}">
-                                <button type="submit">Delete</button>
-                            </form>
-                        </li>
-                        {% endfor %}
-                    {% endfor %}
-                </ul>
-            </li>
-        {% endfor %}
-    </ul>
-
-    <h2>Add Ingress Rule</h2>
-    <form method="post">
-        <input type="hidden" name="action" value="add">
-        <label>Group ID:</label>
-        <select name="group_id">
-            {% for sg in sgs %}
-                <option value="{{ sg.GroupId }}">{{ sg.GroupId }} - {{ sg.GroupName }}</option>
-            {% endfor %}
-        </select><br>
-        <label>Protocol:</label>
-        <input type="text" name="ip_protocol" value="tcp"><br>
-        <label>From Port:</label>
-        <input type="number" name="from_port"><br>
-        <label>To Port:</label>
-        <input type="number" name="to_port"><br>
-        <label>CIDR IP:</label>
-        <input type="text" name="cidr_ip" value="0.0.0.0/0"><br>
-        <button type="submit">Add Rule</button>
-    </form>
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul>
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
+{% extends "base.html" %}
+{% block title %}Modify Security Groups{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h2 class="card-title mb-4 text-center">Security Groups</h2>
+                {% for sg in sgs %}
+                    <div class="mb-4">
+                        <h5>{{ sg.GroupId }} - {{ sg.GroupName }}</h5>
+                        <ul class="list-group">
+                            {% for rule in sg.IpPermissions %}
+                                {% for ip in rule.IpRanges %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>
+                                            <strong>Protocol:</strong> {{ rule.IpProtocol }},
+                                            <strong>Ports:</strong> {{ rule.FromPort }}-{{ rule.ToPort }},
+                                            <strong>CIDR:</strong> {{ ip.CidrIp }}
+                                        </span>
+                                        <form method="post" class="ms-2">
+                                            <input type="hidden" name="action" value="delete">
+                                            <input type="hidden" name="group_id" value="{{ sg.GroupId }}">
+                                            <input type="hidden" name="ip_protocol" value="{{ rule.IpProtocol }}">
+                                            <input type="hidden" name="from_port" value="{{ rule.FromPort }}">
+                                            <input type="hidden" name="to_port" value="{{ rule.ToPort }}">
+                                            <input type="hidden" name="cidr_ip" value="{{ ip.CidrIp }}">
+                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        </form>
+                                    </li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h4 class="card-title mb-3">Add Ingress Rule</h4>
+                <form method="post">
+                    <input type="hidden" name="action" value="add">
+                    <div class="mb-3">
+                        <label for="group_id" class="form-label">Group ID</label>
+                        <select class="form-select" name="group_id" id="group_id">
+                            {% for sg in sgs %}
+                                <option value="{{ sg.GroupId }}">{{ sg.GroupId }} - {{ sg.GroupName }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ip_protocol" class="form-label">Protocol</label>
+                        <input type="text" class="form-control" name="ip_protocol" id="ip_protocol" value="tcp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="from_port" class="form-label">From Port</label>
+                        <input type="number" class="form-control" name="from_port" id="from_port">
+                    </div>
+                    <div class="mb-3">
+                        <label for="to_port" class="form-label">To Port</label>
+                        <input type="number" class="form-control" name="to_port" id="to_port">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cidr_ip" class="form-label">CIDR IP</label>
+                        <input type="text" class="form-control" name="cidr_ip" id="cidr_ip" value="0.0.0.0/0">
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Add Rule</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-info mt-3">
+                {% for message in messages %}
+                    <div>{{ message }}</div>
+                {% endfor %}
         </ul>
       {% endif %}
     {% endwith %}
