@@ -1,35 +1,41 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>AWS Lab Setup</title>
-</head>
-<body>
-    <h1>AWS Lab Setup</h1>
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul>
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
-    <form method="post">
-        <label>Home IP (CIDR): <input type="text" name="home_ip" required placeholder="203.0.113.45/32"></label><br>
-        <label for="keypair">Key Pair:</label>
-<select name="keypair" id="keypair" required>
-    {% for kp in keypairs %}
-        <option value="{{ kp }}">{{ kp }}</option>
-    {% endfor %}
-</select><br>
-        <label>AMI ID: <input type="text" name="ami_id" required value="ami-08a6efd148b1f7504"></label><br>
-        <label>Instance Type:
-            <select name="instance_type">
-                <option value="t2.micro">t2.micro</option>
-                <option value="t3.micro">t3.micro</option>
-            </select>
-        </label><br>
-        <input type="submit" value="Launch Lab">
-    </form>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}AWS Lab Setup{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title mb-4 text-center">AWS Lab Setup</h2>
+                <form method="post">
+                    <div class="mb-3">
+                        <label for="home_ip" class="form-label">Home IP (CIDR)</label>
+                        <input type="text" class="form-control" id="home_ip" name="home_ip" required placeholder="203.0.113.45/32">
+                    </div>
+                    <div class="mb-3">
+                        <label for="keypair" class="form-label">Key Pair</label>
+                        <select class="form-select" name="keypair" id="keypair" required>
+                            {% for kp in keypairs %}
+                                <option value="{{ kp }}">{{ kp }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ami_id" class="form-label">AMI ID</label>
+                        <input type="text" class="form-control" id="ami_id" name="ami_id" required value="ami-08a6efd148b1f7504">
+                    </div>
+                    <div class="mb-3">
+                        <label for="instance_type" class="form-label">Instance Type</label>
+                        <select class="form-select" name="instance_type" id="instance_type">
+                            <option value="t2.micro">t2.micro</option>
+                            <option value="t3.micro">t3.micro</option>
+                        </select>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Launch Lab</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
