@@ -1,32 +1,37 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Resources Created</title>
-</head>
-<body>
-    <h1>Resources Created Successfully!</h1>
-    <p>Your AWS lab environment has been set up.</p>
-
-    <h2>Resources Created:</h2>
-    <ul>
-        <li>VPC</li>
-        <li>Subnet</li>
-        <li>Internet Gateway</li>
-        <li>Route Table</li>
-        <li>Security Group A (SGA)</li>
-        <li>Security Group B (SGB)</li>
-        <li>Network ACL</li>
-        <li>EC2 Instance A</li>
-        <li>EC2 Instance B</li>
-    </ul>
-
-    {% if public_ips %}
-        <h2>EC2 Instances Public IPs:</h2>
-        <ul>
-            {% for ip in public_ips %}
-                <li>{{ ip }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-
-    <a href="{{ url_for('index') }}">Back to
+{% extends "base.html" %}
+{% block title %}Resources Created{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm mt-4">
+            <div class="card-body">
+                <h2 class="card-title text-success text-center mb-3">Resources Created Successfully!</h2>
+                <p class="text-center">Your AWS lab environment has been set up.</p>
+                <h4>Resources Created:</h4>
+                <ul class="list-group mb-3">
+                    <li class="list-group-item">VPC</li>
+                    <li class="list-group-item">Subnet</li>
+                    <li class="list-group-item">Internet Gateway</li>
+                    <li class="list-group-item">Route Table</li>
+                    <li class="list-group-item">Security Group A (SGA)</li>
+                    <li class="list-group-item">Security Group B (SGB)</li>
+                    <li class="list-group-item">Network ACL</li>
+                    <li class="list-group-item">EC2 Instance A</li>
+                    <li class="list-group-item">EC2 Instance B</li>
+                </ul>
+                {% if public_ips %}
+                    <h4>EC2 Instances Public IPs:</h4>
+                    <ul class="list-group mb-3">
+                        {% for ip in public_ips %}
+                            <li class="list-group-item">{{ ip }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <div class="d-grid">
+                    <a href="{{ url_for('index') }}" class="btn btn-outline-primary">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
